@@ -3,9 +3,9 @@ The SievoParser.Console application has been designed in-line with SOA and Domai
 
 The application is supporting the following command line arguments (only the first one is mandatory). The arguments are case in-sensitive:
 
---file <path>             full path to the input file
---sortByStartDate         sort results by column "Start date" in ascending order
---project <project id>    filter results by column "Project"
+1. --file <path>             full path to the input file
+2. --sortByStartDate         sort results by column "Start date" in ascending order
+3. --project <project id>    filter results by column "Project"
 
 ## Implementation Requirement
 The following requirements define the program functionality
@@ -44,7 +44,7 @@ DDD approach has been used for designing the architecture of the solution by cle
  - **SievoParser.Infrastructure** : Responsible for how the data that is initially held in domain entities (in memory) or another persistent store. It contains all our parsing logic along with validation.
  - **SievoParser.Tests** : Responsible for mirroring the structure of the code under test.
  
- ![alt text](https://github.com/bishwaranjans/SievoParser/blob/master/Documentation/DependenciesGraph.PNG)
+ ![alt text](https://github.com/bishwaranjans/SievoParser/blob/master/Documentation/DependenciesGraph.png)
  
  ## Design Patterns
  
