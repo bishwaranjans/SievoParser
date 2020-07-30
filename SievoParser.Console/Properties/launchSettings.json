@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SievoParser.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "--file \"E:\\Projects\\SievoParser\\Documentation\\ExampleDataFormatted.tsv\""
+    }
+  }
+}

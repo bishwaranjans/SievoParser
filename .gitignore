@@ -3,3 +3,11 @@
 ################################################################################
 
 /.vs
+/SievoParser.Console/bin
+/SievoParser.Console/obj
+/SievoParser.Domain/bin/
+/SievoParser.Domain/obj
+/SievoParser.Infrastructure/bin/
+/SievoParser.Infrastructure/obj
+/SievoParser.Tests/bin/
+/SievoParser.Tests/obj
