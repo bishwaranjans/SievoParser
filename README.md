@@ -34,19 +34,7 @@ but keep in mind that more options (e.g. "VeryHigh") can be added in the future.
 
 10. In case of an invalid source value (in a date, money or Complexity column) a descriptive error message should be printed to console and the program terminated.
 
-    The following input example can be downloaded from here.
-
-/***********************************************************************************************************************************************/
-Project	Description	Start date	Category	Responsible	Savings amount	Currency	Complexity
-2	Harmonize Lactobacillus acidophilus sourcing	2014-01-01 00:00:00.000	Dairy	Daisy Milks	NULL	NULL	Simple
-3	Substitute Crème fraîche with evaporated milk in ice-cream products	2013-01-01 00:00:00.000	Dairy	Daisy Milks	141415.942696	EUR	Moderate
-3	Substitute Crème fraîche with evaporated milk in ice-cream products	2013-01-01 00:00:00.000	Dairy	Daisy Milks	141415.942696	EUR	Moderate
-4	Decrease production related non-categorized side costs	2013-01-01 00:00:00.000	Dairy	Daisy Milks	11689.322459	EUR	Hazardous
-4	Decrease production related non-categorized side costs	2013-01-01 00:00:00.000	Dairy	Daisy Milks	11689.322459	EUR	Hazardous
-5	Stop using Kryptonite in production	2013-04-01 00:00:00.000	Dairy	Clark Kent	NULL	NULL	Moderate
-6	Black and white logo paper	2012-06-01 00:00:00.000	Office supplies	Clark Kent	4880.199567	EUR	Simple
-6	Black and white logo paper	2012-06-01 00:00:00.000	Office supplies	Clark Kent	4880.199567	EUR	Simple
-/***********************************************************************************************************************************************/
+  ![alt text](https://github.com/bishwaranjans/SievoParser/blob/master/Documentation/SampleInput.PNG)
 
 ## Solution Architecture
 
@@ -56,13 +44,14 @@ DDD approach has been used for designing the architecture of the solution by cle
  - **SievoParser.Infrastructure** : Responsible for how the data that is initially held in domain entities (in memory) or another persistent store. It contains all our parsing logic along with validation.
  - **SievoParser.Tests** : Responsible for mirroring the structure of the code under test.
  
- ![alt text](https://github.com/bishwaranjans/EnergyGeneration/blob/master/Documentation/EnergyGenerationReport.PNG)
- 
-  ![alt text](https://github.com/bishwaranjans/EnergyGeneration/blob/master/Documentation/EntitiesRelationshipDiagram.PNG)
+ ![alt text](https://github.com/bishwaranjans/SievoParser/blob/master/Documentation/DependenciesGraph.PNG)
  
  ## Design Patterns
  
 The main focus during the development was to use composition over inheritance. Henceforth, Facade and Abstract Factory design patterns have been incorporated to design the application. The primary focus was to accommodate multiple parser into the application. Currently it is supporting TSV parsing and later on it provides the extensibility to support any other parsing like CSV or EXcel etc. Basic SOLID design patterns has been followed wherever possible. 
+
+ ## Coding Guidelines
+ The Microsoft recommended coding guidelines is used.
 
 ## Libraries Used
 In order to avail the flexibility provided by many 3rd party libraries for parsing, below libraries are used in this application. They are simple to configure and provides a clean efficient way of implementation. 

@@ -11,10 +11,11 @@ using System.Text;
 
 namespace SievoParser.Domain.Entities
 {
+
     /// <summary>
     /// Record entity which holds the individual row data with it's properties. It also hold any parsing error or validation fail details.
     /// </summary>
-    /// <seealso cref="System.IEquatable{SievoParser.Domain.Entities.Record}" />
+    /// <seealso cref="System.IEquatable{Record}" />
     public class Record : IEquatable<Record>
     {
         #region Properties
@@ -196,7 +197,7 @@ namespace SievoParser.Domain.Entities
     /// <summary>
     /// The mapper class for Record
     /// </summary>
-    /// <seealso cref="CsvHelper.Configuration.ClassMap{SievoParser.Domain.Entities.Record}" />
+    /// <seealso cref="CsvHelper.Configuration.ClassMap{Record}" />
     public sealed class RecordMap : ClassMap<Record>
     {
         #region Constructors
@@ -222,7 +223,7 @@ namespace SievoParser.Domain.Entities
 
                 // Validate StartDate
                 var startDate = row.GetField(Constants.StartDateHeaderText);
-                if (!DateTime.TryParseExact(startDate, Constants.FileDateTimeFormat, CultureInfo.InvariantCulture.DateTimeFormat, DateTimeStyles.AllowWhiteSpaces, out DateTime validatedStartDate))
+                if (!DateTime.TryParseExact(startDate, Constants.FileDateTimeFormat, CultureInfo.InvariantCulture.DateTimeFormat, DateTimeStyles.AllowWhiteSpaces, out _))
                 {
                     sb.AppendLine($"Start date value: '{startDate}' is different than the allowed format i.e. {Constants.FileDateTimeFormat}");
                 }

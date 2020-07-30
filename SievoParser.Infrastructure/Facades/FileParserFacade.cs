@@ -19,7 +19,7 @@ namespace SievoParser.Infrastructure.Facades
         /// <summary>
         /// The file parser extractor
         /// </summary>
-        private readonly IFileParserExtractor fileParserExtractor;
+        private readonly IFileParserExtractor _fileParserExtractor;
 
         #endregion
 
@@ -31,13 +31,7 @@ namespace SievoParser.Infrastructure.Facades
         /// <value>
         /// The file header columns.
         /// </value>
-        public IList<string> FileHeaderColumns
-        {
-            get
-            {
-                return fileParserExtractor.FileHeaderColumns;
-            }
-        }
+        public IList<string> FileHeaderColumns => _fileParserExtractor.FileHeaderColumns;
 
         #endregion
 
@@ -49,7 +43,7 @@ namespace SievoParser.Infrastructure.Facades
         /// <param name="factory">The factory.</param>
         public FileParserFacade(IFileParser factory)
         {
-            fileParserExtractor = factory.GetFileParserExtractor();
+            _fileParserExtractor = factory.GetFileParserExtractor();
         }
 
         #endregion
@@ -64,7 +58,7 @@ namespace SievoParser.Infrastructure.Facades
         /// </returns>
         public IEnumerable<Record> GetRecordList()
         {
-            return fileParserExtractor.GetRecordList();
+            return _fileParserExtractor.GetRecordList();
         }
 
         /// <summary>
@@ -76,7 +70,7 @@ namespace SievoParser.Infrastructure.Facades
         /// </returns>
         public IEnumerable<Record> GetRecordListByProject(int project)
         {
-            return fileParserExtractor.GetRecordListByProject(project);
+            return _fileParserExtractor.GetRecordListByProject(project);
         }
 
         #endregion       

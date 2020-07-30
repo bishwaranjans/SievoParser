@@ -1,20 +1,21 @@
 ﻿#region Namespaces
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SievoParser.Domain;
 
 #endregion
 
-namespace SievoParser.Domain.Tests.Domain
+namespace SievoParser.Tests.Domain
 {
     [TestClass()]
     public class BootstrapperTests
     {
         #region Fields
 
-        Bootstrapper instance;
+        Bootstrapper _instance;
 
         #endregion
 
@@ -23,8 +24,8 @@ namespace SievoParser.Domain.Tests.Domain
         [TestInitialize]
         public void Setup()
         {
-            instance = Bootstrapper.Instance;
-            instance.RegisterServices();
+            _instance = Bootstrapper.Instance;
+            _instance.RegisterServices();
         }
 
         #endregion
@@ -35,11 +36,11 @@ namespace SievoParser.Domain.Tests.Domain
         public void GetAllowedComplexitiesTest()
         {
             // Act
-            List<string> expectedAllowedComplexities = ConfigurationManager.AppSettings[Utilities.Constants.AppConfigAllowedComplexityText].Trim().Split(Utilities.Constants.CommaDelimiter).Select(s => s.Trim()).ToList();
+            List<string> expectedAllowedComplexities = ConfigurationManager.AppSettings[SievoParser.Domain.Utilities.Constants.AppConfigAllowedComplexityText].Trim().Split(SievoParser.Domain.Utilities.Constants.CommaDelimiter).Select(s => s.Trim()).ToList();
             
             // Assert
-            Assert.IsNotNull(instance.Config);
-            Assert.AreEqual(instance.Config.AllowedComplexities.Count, expectedAllowedComplexities.Count);
+            Assert.IsNotNull(_instance.Config);
+            Assert.AreEqual(_instance.Config.AllowedComplexities.Count, expectedAllowedComplexities.Count);
         }
 
         #endregion
@@ -49,7 +50,7 @@ namespace SievoParser.Domain.Tests.Domain
         [TestCleanup]
         public void CleanUp()
         {
-            instance.DisposeServices();
+            _instance.DisposeServices();
         }
 
         #endregion

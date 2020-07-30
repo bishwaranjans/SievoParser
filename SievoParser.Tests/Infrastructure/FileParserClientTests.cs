@@ -2,19 +2,20 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SievoParser.Domain.AbstractFactories;
+using SievoParser.Infrastructure;
 
 #endregion
 
-namespace SievoParser.Infrastructure.Tests.Infrastructure
+namespace SievoParser.Tests.Infrastructure
 {
     [TestClass()]
     public class FileParserClientTests
     {
         #region Fields
 
-        FileParserClient fileParserClient;
-        IFileParser iFileParser;
-        string fileName;
+        FileParserClient _fileParserClient;
+        IFileParser _iFileParser;
+        string _fileName;
 
         #endregion
 
@@ -23,9 +24,9 @@ namespace SievoParser.Infrastructure.Tests.Infrastructure
         [TestInitialize]
         public void Setup()
         {
-            fileName = "ExampleData.tsv";
+            _fileName = "ExampleData.tsv";
 
-            fileParserClient = new FileParserClient();
+            _fileParserClient = new FileParserClient();
         }
 
         #endregion
@@ -39,11 +40,11 @@ namespace SievoParser.Infrastructure.Tests.Infrastructure
             string expectedFileParserName = "TsvFileParser";
 
             // Act
-            iFileParser = fileParserClient.GetFileParserFromFileExtension(fileName);
+            _iFileParser = _fileParserClient.GetFileParserFromFileExtension(_fileName);
 
             // Assert
-            Assert.IsNotNull(iFileParser);
-            Assert.AreEqual(iFileParser.GetType().Name, expectedFileParserName);
+            Assert.IsNotNull(_iFileParser);
+            Assert.AreEqual(_iFileParser.GetType().Name, expectedFileParserName);
         }
 
         #endregion
@@ -53,7 +54,7 @@ namespace SievoParser.Infrastructure.Tests.Infrastructure
         [TestCleanup]
         public void CleanUp()
         {
-            fileParserClient.Dispose();
+            _fileParserClient.Dispose();
         }
 
         #endregion

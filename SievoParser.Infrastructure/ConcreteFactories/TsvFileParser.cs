@@ -2,7 +2,7 @@
 
 using SievoParser.Domain.AbstractFactories;
 using SievoParser.Domain.AbstractProducts;
-using SievoParser.Infrastructure.ConcreateProducts;
+using SievoParser.Infrastructure.ConcreteProducts;
 using static SievoParser.Domain.Utilities.Constants;
 
 #endregion
@@ -12,7 +12,6 @@ namespace SievoParser.Infrastructure.ConcreteFactories
     /// <summary>
     /// The 'ConcreteFactory' TsvFileParser class.
     /// </summary>
-    /// <seealso cref="SievoParser.Domain.AbstractFactories.IFileParser{SievoParser.Domain.Entities.Record}" />
     /// <seealso cref="SievoParser.Domain.AbstractFactories.IFileParser" />
     public class TsvFileParser : IFileParser
     {
@@ -34,8 +33,7 @@ namespace SievoParser.Infrastructure.ConcreteFactories
         /// Initializes a new instance of the <see cref="TsvFileParser"/> class.
         /// </summary>
         public TsvFileParser()
-        {
-        }
+        { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TsvFileParser" /> class.

@@ -24,7 +24,7 @@ namespace SievoParser.Console
     /// </summary>
     class Program
     {
-        #region Arguments Options
+        #region Nested Class Arguments Options
 
         /// <summary>
         /// Argument options
@@ -38,7 +38,7 @@ namespace SievoParser.Console
             /// The filename.
             /// </value>
             [Option(FilePathText, Required = true, HelpText = FilePathHelpText)]
-            public string Filename { get; set; }
+            public string Filename { get; private set; }
 
             /// <summary>
             /// Gets or sets the project.
@@ -47,7 +47,7 @@ namespace SievoParser.Console
             /// The project.
             /// </value>
             [Option(ProjectText, Required = false, HelpText = ProjectHelpText)]
-            public int Project { get; set; }
+            public int Project { get; private set; }
 
             /// <summary>
             /// Gets or sets the sort by start date.
@@ -56,7 +56,7 @@ namespace SievoParser.Console
             /// The sort by start date.
             /// </value>
             [Option(SortByStartDateText, Required = false, Default = false, HelpText = SortByStartDateHelpText)]
-            public bool IsSortByStartDate { get; set; }
+            public bool IsSortByStartDate { get; private set; }
 
             /// <summary>
             /// Gets the examples.
@@ -65,15 +65,10 @@ namespace SievoParser.Console
             /// The examples.
             /// </value>
             [Usage(ApplicationAlias = ApplicationAliasText)]
-            public static IEnumerable<Example> Examples
-            {
-                get
-                {
-                    return new List<Example>() {
-                               new Example("SievoParser.Console Usage Example", new Options { Filename = @"E:\Projects\SievoParser\Documentation\ExampleData.tsv", Project = 2, IsSortByStartDate = false })
-                               };
-                }
-            }
+            public static IEnumerable<Example> Examples =>
+                new List<Example>() {
+                    new Example("SievoParser.Console Usage Example", new Options { Filename = @"E:\Projects\SievoParser\Documentation\ExampleData.tsv", Project = 2, IsSortByStartDate = false })
+                };
         }
 
         #endregion
@@ -166,6 +161,7 @@ namespace SievoParser.Console
         private static void DisplayHeader(IList<string> headerColumns)
         {
             StringBuilder sb = new StringBuilder();
+
             foreach (var headerColumn in headerColumns)
             {
                 sb.Append($"{headerColumn}{TabDelimiter}");
@@ -189,7 +185,7 @@ namespace SievoParser.Console
                 if (!string.IsNullOrWhiteSpace(record.Error))
                 {
                     isErrorRecord = true;
-                    sb.Append(record.Error); //.TrimEnd('\n')
+                    sb.Append(record.Error.TrimEnd('\n'));
                 }
                 else
                 {
@@ -198,6 +194,7 @@ namespace SievoParser.Console
                         sb.Append(StringUtilities.GetPropValue(record, headerColumn)).Append(TabDelimiter);
                     }
                 }
+
                 StringUtilities.DisplayMessage(sb.ToString(), isErrorRecord);
             });
         }

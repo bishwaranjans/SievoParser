@@ -14,7 +14,7 @@ namespace SievoParser.Domain.Utilities
     {
         public const string TabDelimiter = "\t";
         public const char CommaDelimiter = ',';
-        public const string FileNULLDepiction = "NULL";
+        public const string FileNullDepiction = "NULL";
         public const string FileDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
         public static readonly IList<string> DefaultComplexities = new ReadOnlyCollection<string>(new List<string> { "Simple", "Moderate", "Hazardous" });
 

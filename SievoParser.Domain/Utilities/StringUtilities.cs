@@ -41,33 +41,8 @@ namespace SievoParser.Domain.Utilities
                     break;
             }
 
-            object propValue = src.GetType().GetProperty(mappedPropName).GetValue(src, null);
-            if (isDate)
-            {
-                return Convert.ToDateTime(propValue, CultureInfo.InvariantCulture).ToString(Constants.FileDateTimeFormat);
-            }
-            return propValue;
-        }
-
-        /// <summary>
-        /// Determines whether this instance contains the object.
-        /// </summary>
-        /// <param name="str">The string.</param>
-        /// <param name="substring">The substring.</param>
-        /// <param name="comp">The comp.</param>
-        /// <returns>
-        ///   <c>true</c> if [contains] [the specified substring]; otherwise, <c>false</c>.
-        /// </returns>
-        /// <exception cref="System.ArgumentNullException">substring - substring cannot be null.</exception>
-        /// <exception cref="System.ArgumentException">comp is not a member of StringComparison - comp</exception>
-        public static bool Contains(this string str, string substring, StringComparison comp)
-        {
-            if (substring == null)
-                throw new ArgumentNullException("substring", "substring cannot be null.");
-            else if (!Enum.IsDefined(typeof(StringComparison), comp))
-                throw new ArgumentException("comp is not a member of StringComparison", "comp");
-
-            return str.IndexOf(substring, comp) >= 0;
+            object propValue = src.GetType().GetProperty(mappedPropName)?.GetValue(src, null);
+            return isDate ? Convert.ToDateTime(propValue, CultureInfo.InvariantCulture).ToString(Constants.FileDateTimeFormat) : propValue;
         }
 
         /// <summary>

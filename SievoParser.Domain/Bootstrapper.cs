@@ -23,7 +23,7 @@ namespace SievoParser.Domain
         /// <summary>
         /// The service provider
         /// </summary>
-        private static IServiceProvider ServiceProvider;
+        private static IServiceProvider _serviceProvider;
 
         #endregion
 
@@ -35,7 +35,7 @@ namespace SievoParser.Domain
         /// <value>
         /// The instance.
         /// </value>
-        public static Bootstrapper Instance { get { return Lazy.Value; } }
+        public static Bootstrapper Instance => Lazy.Value;
 
         /// <summary>
         /// Initializes the related work for this instance.
@@ -47,7 +47,7 @@ namespace SievoParser.Domain
         {
             get
             {
-                var service = ServiceProvider.GetService<IConfiguration>();
+                var service = _serviceProvider.GetService<IConfiguration>();
                 return service;
             }
         }
@@ -73,7 +73,7 @@ namespace SievoParser.Domain
         public void RegisterServices()
         {
             // Setup DI
-            ServiceProvider = new ServiceCollection()
+            _serviceProvider = new ServiceCollection()
                 .AddSingleton<IConfiguration, DefaultConfiguration>()
                 .BuildServiceProvider();
         }
@@ -83,11 +83,11 @@ namespace SievoParser.Domain
         /// </summary>
         public void DisposeServices()
         {
-            if (ServiceProvider == null)
+            if (_serviceProvider == null)
             {
                 return;
             }
-            if (ServiceProvider is IDisposable disposable)
+            if (_serviceProvider is IDisposable disposable)
             {
                 disposable.Dispose();
             }

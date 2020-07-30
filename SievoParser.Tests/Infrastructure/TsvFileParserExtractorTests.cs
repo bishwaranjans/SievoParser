@@ -1,29 +1,31 @@
 ﻿#region Namespaces
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SievoParser.Domain;
-using SievoParser.Domain.AbstractFactories;
-using SievoParser.Domain.Entities;
-using SievoParser.Infrastructure.ConcreateFactories;
-using SievoParser.Infrastructure.Facades;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SievoParser.Domain;
+using SievoParser.Domain.AbstractFactories;
+using SievoParser.Domain.Entities;
+using SievoParser.Domain.Utilities;
+using SievoParser.Infrastructure;
+using SievoParser.Infrastructure.ConcreteFactories;
+using SievoParser.Infrastructure.Facades;
 
 #endregion
 
-namespace SievoParser.Infrastructure.ConcreateProducts.Tests.Infrastructure
+namespace SievoParser.Tests.Infrastructure
 {
     [TestClass()]
     public class TsvFileParserExtractorTests
     {
         #region Fields
 
-        Bootstrapper instance;
-        FileParserFacade fileParserFacade;
-        IFileParser iFileParser;
-        string applicatuionBase;
+        Bootstrapper _instance;
+        FileParserFacade _fileParserFacade;
+        IFileParser _iFileParser;
+        string _applicationBase;
 
         #endregion
 
@@ -32,10 +34,10 @@ namespace SievoParser.Infrastructure.ConcreateProducts.Tests.Infrastructure
         [TestInitialize]
         public void Setup()
         {
-            instance = Bootstrapper.Instance;
-            instance.RegisterServices();
+            _instance = Bootstrapper.Instance;
+            _instance.RegisterServices();
 
-            applicatuionBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+            _applicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
         }
 
         #endregion
@@ -46,12 +48,12 @@ namespace SievoParser.Infrastructure.ConcreateProducts.Tests.Infrastructure
         public void GetRecordListTest_Success_ValidData()
         {
             // Arrange
-            string fileFullPath = Path.Join(applicatuionBase, @"TestData\ExampleData.tsv");
-            iFileParser = new TsvFileParser(fileFullPath);
-            fileParserFacade = new FileParserFacade(iFileParser);
+            string fileFullPath = Path.Join(_applicationBase, @"TestData\ExampleData.tsv");
+            _iFileParser = new TsvFileParser(fileFullPath);
+            _fileParserFacade = new FileParserFacade(_iFileParser);
 
             // Act
-            IList<Record> faultyRecords = fileParserFacade.GetRecordList().Where(s => !string.IsNullOrWhiteSpace(s.Error)).ToList();
+            IList<Record> faultyRecords = _fileParserFacade.GetRecordList().Where(s => !string.IsNullOrWhiteSpace(s.Error)).ToList();
 
             // Assert
             Assert.IsNotNull(faultyRecords);
@@ -62,14 +64,14 @@ namespace SievoParser.Infrastructure.ConcreateProducts.Tests.Infrastructure
         public void GetRecordListByProjectTest_Success_ValidData()
         {
             // Arrange
-            string fileFullPath = Path.Join(applicatuionBase, @"TestData\ExampleData.tsv");
-            iFileParser = new TsvFileParser(fileFullPath);
-            fileParserFacade = new FileParserFacade(iFileParser);
+            string fileFullPath = Path.Join(_applicationBase, @"TestData\ExampleData.tsv");
+            _iFileParser = new TsvFileParser(fileFullPath);
+            _fileParserFacade = new FileParserFacade(_iFileParser);
             int project = 5;
             int expectedRecordCount = 1;
 
             // Act
-            IList<Record> records = fileParserFacade.GetRecordListByProject(project).ToList();
+            IList<Record> records = _fileParserFacade.GetRecordListByProject(project).ToList();
 
             // Assert
             Assert.IsNotNull(records);
@@ -80,14 +82,14 @@ namespace SievoParser.Infrastructure.ConcreateProducts.Tests.Infrastructure
         public void GetRecordListTest_Success_SortByStartDate()
         {
             // Arrange
-            string fileFullPath = Path.Join(applicatuionBase, @"TestData\ExampleData.tsv");
-            iFileParser = new TsvFileParser(fileFullPath);
-            fileParserFacade = new FileParserFacade(iFileParser);
+            string fileFullPath = Path.Join(_applicationBase, @"TestData\ExampleData.tsv");
+            _iFileParser = new TsvFileParser(fileFullPath);
+            _fileParserFacade = new FileParserFacade(_iFileParser);
             string expectedStartDate = "2009-06-01 00:00:00.000";
 
             // Act
-            IList<Record> records = fileParserFacade.GetRecordList().OrderBy(s => s.StartDate).ToList();
-            string startDate = DateTime.Parse(records.FirstOrDefault().StartDate.ToString()).ToString(Domain.Utilities.Constants.FileDateTimeFormat);
+            IList<Record> records = _fileParserFacade.GetRecordList().OrderBy(s => s.StartDate).ToList();
+            string startDate = DateTime.Parse(records.FirstOrDefault()?.StartDate.ToString() ?? string.Empty).ToString(Constants.FileDateTimeFormat);
 
             // Assert
             Assert.IsNotNull(records);
@@ -98,19 +100,19 @@ namespace SievoParser.Infrastructure.ConcreateProducts.Tests.Infrastructure
         public void GetRecordListTest_Success_ColumnsOrderChanged()
         {
             // Arrange
-            string fileFullPath = Path.Join(applicatuionBase, @"TestData\ColumnsOrderChangeExampleData.tsv");
-            iFileParser = new TsvFileParser(fileFullPath);
-            fileParserFacade = new FileParserFacade(iFileParser);
+            string fileFullPath = Path.Join(_applicationBase, @"TestData\ColumnsOrderChangeExampleData.tsv");
+            _iFileParser = new TsvFileParser(fileFullPath);
+            _fileParserFacade = new FileParserFacade(_iFileParser);
             int expectedProject = 2;
 
             // Act
-            IList<Record> records = fileParserFacade.GetRecordList().ToList();
+            IList<Record> records = _fileParserFacade.GetRecordList().ToList();
             IList<Record> faultyRecords = records.Where(s => !string.IsNullOrWhiteSpace(s.Error)).ToList();
             Record record = records.FirstOrDefault();
 
             // Assert           
             Assert.AreEqual(2, records.Count);
-            Assert.AreEqual(expectedProject, record.Project);
+            Assert.AreEqual(expectedProject, record?.Project);
             Assert.IsNotNull(faultyRecords);
             Assert.AreEqual(0, faultyRecords.Count);
         }
@@ -119,12 +121,12 @@ namespace SievoParser.Infrastructure.ConcreateProducts.Tests.Infrastructure
         public void GetRecordListTest_Error_InvalidDateFormat()
         {
             // Arrange
-            string fileFullPath = Path.Join(applicatuionBase, @"TestData\InvalidDateExampleData.tsv");
-            iFileParser = new TsvFileParser(fileFullPath);
-            fileParserFacade = new FileParserFacade(iFileParser);
+            string fileFullPath = Path.Join(_applicationBase, @"TestData\InvalidDateExampleData.tsv");
+            _iFileParser = new TsvFileParser(fileFullPath);
+            _fileParserFacade = new FileParserFacade(_iFileParser);
 
             // Act
-            IList<Record> faultyRecords = fileParserFacade.GetRecordList().Where(s => !string.IsNullOrWhiteSpace(s.Error)).ToList();
+            IList<Record> faultyRecords = _fileParserFacade.GetRecordList().Where(s => !string.IsNullOrWhiteSpace(s.Error)).ToList();
             string errorMessage1 = faultyRecords.Select(s => s.Error).FirstOrDefault();
             string errorMessage2 = faultyRecords.Select(s => s.Error).LastOrDefault();
             bool isContainExpectedErrorMessage1 = errorMessage1.Contains("The string '2014hghdkdk-01-01 00:00:00.000' was not recognized as a valid DateTime. There is an unknown word starting at index '4'.");
@@ -141,12 +143,12 @@ namespace SievoParser.Infrastructure.ConcreateProducts.Tests.Infrastructure
         public void GetRecordListTest_Error_InvalidSavingAmount()
         {
             // Arrange
-            string fileFullPath = Path.Join(applicatuionBase, @"TestData\InvalidSavingAmountExampleData.tsv");
-            iFileParser = new TsvFileParser(fileFullPath);
-            fileParserFacade = new FileParserFacade(iFileParser);
+            string fileFullPath = Path.Join(_applicationBase, @"TestData\InvalidSavingAmountExampleData.tsv");
+            _iFileParser = new TsvFileParser(fileFullPath);
+            _fileParserFacade = new FileParserFacade(_iFileParser);
 
             // Act
-            IList<Record> faultyRecords = fileParserFacade.GetRecordList().Where(s => !string.IsNullOrWhiteSpace(s.Error)).ToList();
+            IList<Record> faultyRecords = _fileParserFacade.GetRecordList().Where(s => !string.IsNullOrWhiteSpace(s.Error)).ToList();
             string errorMessage = faultyRecords.Select(s => s.Error).FirstOrDefault();
             bool isContainExpectedErrorMessage = errorMessage.Contains("The conversion cannot be performed.\r\n    Text: 'invalidsavingvalue'");
 
@@ -160,12 +162,12 @@ namespace SievoParser.Infrastructure.ConcreateProducts.Tests.Infrastructure
         public void GetRecordListTest_Error_InvalidComplexity()
         {
             // Arrange
-            string fileFullPath = Path.Join(applicatuionBase, @"TestData\InvalidComplexityExampleData.tsv");
-            iFileParser = new TsvFileParser(fileFullPath);
-            fileParserFacade = new FileParserFacade(iFileParser);
+            string fileFullPath = Path.Join(_applicationBase, @"TestData\InvalidComplexityExampleData.tsv");
+            _iFileParser = new TsvFileParser(fileFullPath);
+            _fileParserFacade = new FileParserFacade(_iFileParser);
 
             // Act
-            IList<Record> faultyRecords = fileParserFacade.GetRecordList().Where(s => !string.IsNullOrWhiteSpace(s.Error)).ToList();
+            IList<Record> faultyRecords = _fileParserFacade.GetRecordList().Where(s => !string.IsNullOrWhiteSpace(s.Error)).ToList();
             string errorMessage = faultyRecords.Select(s => s.Error).FirstOrDefault();
             bool isContainExpectedErrorMessage = errorMessage.Contains("Complexity value: 'VeryHigh' is different than the allowed values");
 
@@ -179,12 +181,12 @@ namespace SievoParser.Infrastructure.ConcreateProducts.Tests.Infrastructure
         public void GetRecordListTest_Error_InvalidLines()
         {
             // Arrange
-            string fileFullPath = Path.Join(applicatuionBase, @"TestData\InvalidLinesExampleData.tsv");
-            iFileParser = new TsvFileParser(fileFullPath);
-            fileParserFacade = new FileParserFacade(iFileParser);
+            string fileFullPath = Path.Join(_applicationBase, @"TestData\InvalidLinesExampleData.tsv");
+            _iFileParser = new TsvFileParser(fileFullPath);
+            _fileParserFacade = new FileParserFacade(_iFileParser);
 
             // Act
-            IList<Record> faultyRecords = fileParserFacade.GetRecordList().Where(s => !string.IsNullOrWhiteSpace(s.Error)).ToList();
+            IList<Record> faultyRecords = _fileParserFacade.GetRecordList().Where(s => !string.IsNullOrWhiteSpace(s.Error)).ToList();
             string errorMessage = faultyRecords.Select(s => s.Error).FirstOrDefault();
             bool isContainExpectedErrorMessage = errorMessage.Contains("The conversion cannot be performed.\r\n    Text: 'hkdhgkhgs'");
 
@@ -199,17 +201,14 @@ namespace SievoParser.Infrastructure.ConcreateProducts.Tests.Infrastructure
         {
             // Arrange
             int project = 6;
-            bool isSortByStartDate = true;
 
-            string fileFullPath = Path.Join(applicatuionBase, @"TestData\MixedExampleData.tsv");
+            string fileFullPath = Path.Join(_applicationBase, @"TestData\MixedExampleData.tsv");
             FileParserClient fileParserClient = new FileParserClient();
             IFileParser iFileParser = fileParserClient.GetFileParserFromFileExtension(fileFullPath);
             FileParserFacade fileParserFacade = new FileParserFacade(iFileParser);
 
             // Act
-            List<Record> records = project == 0 ?
-            (isSortByStartDate ? fileParserFacade.GetRecordList().OrderBy(s => s.StartDate).ToList() : fileParserFacade.GetRecordList().ToList()) :
-            (isSortByStartDate ? fileParserFacade.GetRecordListByProject(project).OrderBy(s => s.StartDate).ToList() : fileParserFacade.GetRecordListByProject(project).ToList());
+            List<Record> records = fileParserFacade.GetRecordListByProject(project).OrderBy(s => s.StartDate).ToList();
 
             List<Record> faultyRecords = records.Where(s => !string.IsNullOrWhiteSpace(s.Error)).ToList();
 
@@ -220,6 +219,33 @@ namespace SievoParser.Infrastructure.ConcreateProducts.Tests.Infrastructure
             Assert.AreEqual(1, faultyRecords.Count);
         }
 
+        [TestMethod()]
+        public void GetRecordListByProjectWithSortAndNoProjectIdSpecification_IntegrationTest_Error_MixedValidInValidRecords()
+        {
+            // Arrange
+            int project = 0; // This means no project i specified as per the CommandLine nuget package. Hence all records code is being invoked.
+            bool isSortByStartDate = true;
+
+            string fileFullPath = Path.Join(_applicationBase, @"TestData\MixedExampleData.tsv");
+            FileParserClient fileParserClient = new FileParserClient();
+            IFileParser iFileParser = fileParserClient.GetFileParserFromFileExtension(fileFullPath);
+            FileParserFacade fileParserFacade = new FileParserFacade(iFileParser);
+
+            // Act
+            List<Record> records = project == 0 ?
+                        (isSortByStartDate ? fileParserFacade.GetRecordList().OrderBy(s => s.StartDate).ToList() : fileParserFacade.GetRecordList().ToList()) :
+                        (isSortByStartDate ? fileParserFacade.GetRecordListByProject(project).OrderBy(s => s.StartDate).ToList() : fileParserFacade.GetRecordListByProject(project).ToList());
+
+
+            List<Record> faultyRecords = records.Where(s => !string.IsNullOrWhiteSpace(s.Error)).ToList();
+
+            // Assert
+            Assert.IsNotNull(records);
+            Assert.AreEqual(9, records.Count);
+            Assert.IsNotNull(faultyRecords);
+            Assert.AreEqual(5, faultyRecords.Count);
+        }
+
         #endregion
 
         #region Test CleanUp
@@ -227,7 +253,7 @@ namespace SievoParser.Infrastructure.ConcreateProducts.Tests.Infrastructure
         [TestCleanup]
         public void CleanUp()
         {
-            instance.DisposeServices();
+            _instance.DisposeServices();
         }
 
         #endregion

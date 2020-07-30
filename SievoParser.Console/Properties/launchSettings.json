@@ -2,7 +2,7 @@
   "profiles": {
     "SievoParser.Console": {
       "commandName": "Project",
-      "commandLineArgs": "--file \"E:\\Projects\\SievoParser\\Documentation\\ExampleDataFormatted.tsv\""
+      "commandLineArgs": "--file \"E:\\Sievo\\SievoParser.Tests\\TestData\\MixedExampleData.tsv\" --project 0 --sortByStartDate"
     }
   }
 }

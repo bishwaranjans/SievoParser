@@ -18,7 +18,6 @@ namespace SievoParser.Infrastructure.ConcreteProducts
     /// <summary>
     /// The Concrete 'Product' TsvFileParserExtractor class
     /// </summary>
-    /// <seealso cref="SievoParser.Domain.AbstractProducts.IFileParserExtractor{SievoParser.Domain.Entities.Record}" />
     /// <seealso cref="SievoParser.Domain.AbstractProducts.IFileParserExtractor" />
     public class TsvFileParserExtractor : IFileParserExtractor
     {
@@ -123,8 +122,8 @@ namespace SievoParser.Infrastructure.ConcreteProducts
             };
 
             config.RegisterClassMap<RecordMap>();
-            config.TypeConverterOptionsCache.GetOptions<decimal?>().NullValues.AddRange(new[] { Constants.FileNULLDepiction });
-            config.TypeConverterOptionsCache.GetOptions<string>().NullValues.AddRange(new[] { Constants.FileNULLDepiction });
+            config.TypeConverterOptionsCache.GetOptions<decimal?>().NullValues.AddRange(new[] { Constants.FileNullDepiction });
+            config.TypeConverterOptionsCache.GetOptions<string>().NullValues.AddRange(new[] { Constants.FileNullDepiction });
 
             return config;
         }

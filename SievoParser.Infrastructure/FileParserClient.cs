@@ -29,7 +29,7 @@ namespace SievoParser.Infrastructure
         #region Constructors
 
         /// <summary>
-        /// Initializes the <see cref="FileParserFacade"/> class.
+        /// Initializes the <see cref="FileParserClient"/> class.
         /// </summary>
         static FileParserClient()
         {
@@ -37,9 +37,9 @@ namespace SievoParser.Infrastructure
             Type[] types = assembly.GetTypes();
             foreach (Type type in types)
             {
-                if (typeof(IFileParser).IsAssignableFrom(type))
+                if (!typeof(IFileParser).IsAssignableFrom(type)) continue;
+                if (Activator.CreateInstance(type) is IFileParser parser)
                 {
-                    IFileParser parser = Activator.CreateInstance(type) as IFileParser;
                     Parsers.Add(parser.ToString(), parser);
                 }
             }
@@ -91,7 +91,7 @@ namespace SievoParser.Infrastructure
         #region IDisposal Implementation
 
         // To detect redundant calls
-        private bool _disposed = false;
+        private bool _disposed;
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
