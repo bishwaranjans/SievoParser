@@ -48,7 +48,7 @@ DDD approach has been used for designing the architecture of the solution by cle
  
  ## Design Patterns
  
-The main focus during the development was to use composition over inheritance. Henceforth, **Facade** and **Abstract Factory** design patterns have been incorporated to design the application. The primary focus was to accommodate multiple parser into the application. Currently it is supporting TSV parsing and later on it provides the extensibility to support any other parsing like CSV or EXcel etc. Basic SOLID design patterns has been followed wherever possible. 
+The main focus during the development was to use composition over inheritance. Henceforth, **Facade** and **Abstract Factory** design patterns have been incorporated to design the application. The primary focus was to accommodate multiple parser into the application. Currently it is supporting TSV parsing and later on it provides the extensibility to support any other parsing like CSV or EXcel etc. Basic **SOLID design pattern** has been followed wherever possible. 
 
  ## Coding Guidelines
  The Microsoft recommended coding guidelines is used.
